@@ -1,13 +1,16 @@
 const express = require('express')
 const app = express()
 
-app.use((req, res) => {
+let count = 0
+
+app.use((_, res) => {
   res
     .set('Content-Type', 'text/html; charset=UTF-8')
-    .send(
-      'HOI!! your ip is: ' + req.ip + '!!<hr />' +
-      'hosted by Deplux<br />' +
-      'Envvars: <ul>' + Object.keys(process.env).reduce((prev, curr) => `${prev}\n<li>${curr} : ${process.env[curr]}</li>`, '') + '</ul>')
+    .send(`Hello, world! you're ${toOrdinal(++count)} visitor!`)
 })
 
-app.listen(process.env.PORT)
+app.listen(80)
+
+function toOrdinal (number) {
+  return number + (['st','nd','rd'][((number + 90) % 100 - 10) % 10 - 1] ||'th')
+}
